@@ -41,3 +41,13 @@ I would have liked to spend more time on visualizing the dataset. I like to to t
 
 ## Summary
 The above notebook was a great introduction to the AutoGluon framework. There were multiple options to train models and learn how to try out different parameters
+
+The best performing model was the new features model with a RSME of 30.305488
+
+After training the model using AutoGluon, the `fit_summary()` function was used to identify the best-performing model, which was `WeightedEnsemble_L3` with a root mean squared error (RMSE) of **-30.305488** on the validation set. This ensemble model combined predictions from high-performing base models such as `LightGBM_BAG_L2`, `LightGBMXT_BAG_L2`, and `CatBoost_BAG_L2`, each of which individually achieved RMSE values in the range of -30.5 to -31.1. The ensemble's ability to leverage the strengths of its components through weighted averaging led to superior overall performance. 
+
+The next best performing model was the hpo model with a RSME of-35.972185
+
+In this evaluation, the second training run using updated hyperparameter tuning settings focused on both LightGBM and neural network models (`NN_TORCH`), with explicitly defined search spaces for parameters like `learning_rate`, `activation`, and `layers`. The `fit_summary()` revealed that the best model was once again a weighted ensemble—specifically, `WeightedEnsemble_L3`—achieving a validation RMSE of **-35.972185**. This performance was slightly worse compared to the first run’s top model (`WeightedEnsemble_L3` with RMSE of **-30.305488**), suggesting that the new hyperparameter configurations did not lead to improved generalization. Interestingly, all the trained models in the second run were based on LightGBM variations, indicating that the neural network configurations may have either underperformed or were filtered out during model selection. The broader hyperparameter space, especially for neural networks (e.g., dropout probabilities ranging from 0.0 to 0.5, multiple activation functions, and varying layer depths), may have introduced too much variance or failed to converge within the limited time (`600 seconds`), ultimately impacting ensemble quality. In contrast, the first configuration, which yielded better performance, possibly benefited from more stable base models and a more optimized balance of complexity and generalization, particularly from LightGBM and CatBoost components. This comparison highlights that while hyperparameter tuning is essential, overly broad or insufficiently constrained search spaces—especially for sensitive models like neural networks—can sometimes degrade overall model performance when not carefully managed.
+
+
